@@ -1,3 +1,4 @@
+from django.template.loader import render_to_string
 from django.urls import resolve
 from django.test import TestCase
 from django.http import HttpRequest
@@ -15,6 +16,5 @@ class HomePageTest(TestCase):
     def test_home_page_returns_correct_html(self):
         request = HttpRequest() #Cria uma request http
         response = home_page(request) #Passa a request para a home_page e captura a resposta
-        self.assertTrue(response.content.startswith(b'<html>')) #Verifica se a resposta recebida inicia com '<html>'
-        self.assertIn(b'<title> To-Do lists </title>', response.content) #Verifica se existe o código na resposta
-        self.assertTrue(response.content.endswith(b'</html>')) #Verifica se a resposta termina com o texto
+        expected_html = render_to_string('home.html')
+        self.assertEqual(response.content.decode(), expected_html) # Compara se o template é o mesmo que veio na resposta http
