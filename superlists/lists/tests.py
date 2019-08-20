@@ -1,6 +1,5 @@
 from django.template.loader import render_to_string
 from django.urls import resolve
-from django.test import TestCase
 from django.http import HttpRequest
 
 from superlists.lists.views import home_page
@@ -17,4 +16,13 @@ class HomePageTest(TestCase):
         request = HttpRequest() #Cria uma request http
         response = home_page(request) #Passa a request para a home_page e captura a resposta
         expected_html = render_to_string('home.html')
-        self.assertEqual(response.content.decode(), expected_html) # Compara se o template é o mesmo que veio na resposta http
+        self.assertEqual(response.content.decode(), expected_html) #Compara se o template é o mesmo que veio na resposta http
+
+    def test_home_page_can_save_POST_request(self):
+        request = HttpRequest()
+        request.method = 'POST'
+        request.POST['item-text'] = 'A new list item'
+
+        response = home_page(request)
+
+        self.assertIn('A new list item', response.content.decode())
