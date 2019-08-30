@@ -5,7 +5,6 @@ from django.http import HttpResponse
 def home_page(request):
     context = {}
     template_name = 'home.html'
-    # context['new_item_text'] = request.POST.get('item_text','')
     return render(request, template_name, {
             'new_item_text': request.POST.get('item_text',''),
         })
